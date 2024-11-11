@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Doctor</title>
+  <style>
+    /* CSS Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 1em;
+      text-align: center;
+    }
+
+    section {
+      margin: 2em auto;
+      padding: 1em;
+      width: 90%;
+      max-width: 500px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-top: 1em;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 0.7em;
+      margin-top: 0.5em;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header Section -->
+  <header>
+    <h1>Doctor Appointment Booking</h1>
+    <p>Schedule your appointments effortlessly!</p>
+  </header>
+
+  <!-- User Registration Section -->
+  <section id="registration">
+    <h2>User Registration</h2>
+    <form id="registrationForm">
+      <label for="email">Email:</label>
+      <input type="email" id="email" required>
+      <label for="password">Password:</label>
+      <input type="password" id="password" required>
+      <button type="button" onclick="registerUser()">Register</button>
+    </form>
+  </section>
+
+  <!-- Doctor Browsing Section -->
+  <section id="doctorList" class="hidden">
+    <h2>Available Doctors</h2>
+    <div id="doctorsContainer"></div>
+  </section>
+
+  <!-- Appointment Booking Form -->
+  <section id="bookingForm" class="hidden">
+    <h2>Book an Appointment</h2>
+    <form id="appointmentForm">
+      <label for="date">Select Date:</label>
+      <input type="date" id="date" required>
+      <label for="documents">Upload Documents:</label>
+      <input type="file" id="documents" multiple>
+      <button type="button" onclick="bookAppointment()">Book Now</button>
+    </form>
+  </section>
+
+  <!-- Appointment Confirmation Section -->
+  <section id="confirmation" class="hidden">
+    <h2>Appointment Confirmation</h2>
+    <p>Your appointment has been successfully booked!</p>
+  </section>
+
+  <script>
+    // JavaScript Code
+
+    // Sample doctors data for demonstration purposes
+    const doctors = [
+      { id: 1, name: "Dr. Smith", specialty: "General Practitioner" },
+      { id: 2, name: "Dr. Johnson", specialty: "Cardiologist" },
+      { id: 3, name: "Dr. Lee", specialty: "Dermatologist" },
+    ];
+
+    // Function to display doctors after user registration
+    function displayDoctors() {
+      const doctorsContainer = document.getElementById("doctorsContainer");
+      doctorsContainer.innerHTML = ""; // Clear previous list
+
+      doctors.forEach((doctor) => {
+        const doctorDiv = document.createElement("div");
+        doctorDiv.classList.add("doctor");
+        doctorDiv.innerHTML = `<p>${doctor.name} - ${doctor.specialty}</p>
+                               <button onclick="showBookingForm(${doctor.id})">Book Now</button>`;
+        doctorsContainer.appendChild(doctorDiv);
+      });
+
+      document.getElementById("doctorList").classList.remove("hidden");
+    }
+
+    // Function to simulate user registration
+    function registerUser() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      if (email && password) {
+        alert("Registration successful!");
+        document.getElementById("registration").classList.add("hidden");
+        displayDoctors();
+      } else {
+        alert("Please fill in all fields.");
+      }
+    }
+
+    // Show booking form for a specific doctor
+    function showBookingForm(doctorId) {
+      document.getElementById("doctorList").classList.add("hidden");
+      document.getElementById("bookingForm").classList.remove("hidden");
+      sessionStorage.setItem("doctorId", doctorId); // Save doctor selection
+    }
+
+    // Function to book an appointment
+    function bookAppointment() {
+      const date = document.getElementById("date").value;
+      const doctorId = sessionStorage.getItem("doctorId");
+
+      if (date) {
+        alert(`Appointment booked with Doctor ID ${doctorId} on ${date}`);
+        document.getElementById("bookingForm").classList.add("hidden");
+        document.getElementById("confirmation").classList.remove("hidden");
+      } else {
+        alert("Please select a date.");
+      }
+    }
+  </script>
+
+</body>
+</html>
